@@ -93,12 +93,12 @@ define(["./particles/particle", "common"], function(Particle, common) {'use stri
 			
 			color.fill(g, h, 0);
 			
-			var radius = 5;
-			var numPoints = radius * 20;
+			var radius = 10;
+			var numPoints = Math.PI * radius * radius;
 			var angle = Math.PI * 2/numPoints;
 
-			for (var i = 0; i < numPoints/2; i++) {
-				for (var j = 0; j < numPoints/2; j++) {
+			for (var i = 0; i < numPoints; i++) {
+				for (var j = 0; j < numPoints; j++) {
 					g.rect(radius * Math.sin(angle * i) + x, radius * Math.cos(angle * j) + y, 1, 1);
 					// console.log(radius * Math.sin(i) + x);
 				}
