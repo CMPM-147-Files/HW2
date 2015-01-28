@@ -41,25 +41,49 @@ define(["./particles/particle", "common"], function(Particle, common) {'use stri
 
             console.log(w + " " + h);
 
-            var spacing = 25;
+            var spacing = 5;
             var rows = Math.round(h / spacing) + 1;
             var columns = Math.round(w / spacing) + 1;
+			
+			var scale = .005;
 
             // Iterate through all the pixels of a w by h rectangle, starting at (x, y)
             for (var i = 0; i < rows; i++) {
                 var y = i * spacing;
                 for (var j = 0; j < columns; j++) {
-                    var r = spacing * .8;
+                    var r = spacing * 1;
                     var x = j * spacing;
 
                     g.noStroke();
-                    g.fill(Math.random(), .7, 1);
+					
+					var size = 20;
+					var theta = 10 * utilities.noise(x * scale * .3, y * scale * .3 + 100);
+					
+					var x0 = x + size*Math.cos(theta);
+					var y0 = y + size*Math.sin(theta);
+					
+					var h = utilities.noise(x0 * scale, y0 * scale);
+					
+					var color = new common.KColor(.7, 1, 1);
+					
+                    // g.fill(Math.random(), .7, 1);
+					
+					color.fill(g, h, 0);
                     g.rect(x, y, r, r);
 
                 }
             }
 
         },
+		
+		drawWithMouse : function(g) {
+			var w = g.width;
+            var h = g.height;
+
+            var spacing = 5;
+            var rows = Math.round(h / spacing) + 1;
+            var columns = Math.round(w / spacing) + 1;
+		},
 
         // 3d things
         setTerrainToHeight : function(g) {

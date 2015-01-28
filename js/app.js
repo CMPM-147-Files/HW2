@@ -41,6 +41,7 @@ define(["processing", "./drawing", "./threeUtils/threeScene", "common", "./parti
 
             // Create the canvas
 
+			
             var processingInstance = new Processing(canvas.get(0), function(g) {
                 app.particles = [];
                 // Create particles
@@ -120,6 +121,13 @@ define(["processing", "./drawing", "./threeUtils/threeScene", "common", "./parti
 
             });
 
+			$("#view").click(function(ev) {
+				var x = ev.offsetX - app.dimensions.x / 2;
+                var y = ev.offsetY - app.dimensions.y / 2;
+				
+				console.log(x + " " + y);
+			});
+			
             $("#view").draggable({
                 helper : function() {
                     return $("<div id='dragPos'></div>");
@@ -128,7 +136,6 @@ define(["processing", "./drawing", "./threeUtils/threeScene", "common", "./parti
                 drag : function(event, ui) {
                     var x = $('#dragPos').offset().left;
                     var y = $('#dragPos').offset().top;
-
                 }
             });
 
