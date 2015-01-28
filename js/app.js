@@ -72,6 +72,8 @@ define(["processing", "./drawing", "./threeUtils/threeScene", "common", "./parti
                 // Draw ONE-TIME things
 				g.noStroke();
 				g.background(0.5, 0, 1);
+				
+				g.drawRad = 10;
                 // drawing.drawGrid(g);
 
                 g.draw = function() {
@@ -96,6 +98,15 @@ define(["processing", "./drawing", "./threeUtils/threeScene", "common", "./parti
 					if (app.moused) {
 						drawing.drawWithMouse(g);
 					}
+					
+					if (app.key === 'q') {
+						g.drawRad--;
+						if (g.drawRad < 1) g.drawRad = 1;
+					} else if (app.key === 'e') {
+						g.drawRad++;
+					}
+					
+					app.key = undefined;
 					
                 };
             });
@@ -173,6 +184,13 @@ define(["processing", "./drawing", "./threeUtils/threeScene", "common", "./parti
                         break;
 					case 'S':
 						app.key = 's';
+						break;
+					case 'Q':
+						app.key = 'q';
+						break;
+					case 'E':
+						app.key = 'e';
+						break;
                 }
 
             });

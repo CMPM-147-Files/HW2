@@ -84,31 +84,52 @@ define(["./particles/particle", "common"], function(Particle, common) {'use stri
 			
 			var theta = 10 * utilities.noise(x * .005 * .3, y * .005 * .3 + 100);
 			
-			var x0 = x + 20*Math.cos(theta);
-			var y0 = y + 20*Math.sin(theta);
-					
-			var h = utilities.noise(x0 * .005, y0 * .005);
-			
 			var color = new common.KColor(.7, 1, 1);
 			
-			color.fill(g, h, 0);
+			// Loops are used for circle drawing to that the pixels within the circle will have different colors
 			
-			var radius = 10;
-			var numPoints = Math.PI * radius * radius;
-			var angle = Math.PI * 2/numPoints;
+			// Make hue and color change based on direction of drag
+			
+			
+			var radius = g.drawRad;
+			//var numPoints = Math.PI * radius * radius;
+			//var angle = Math.PI * 2/numPoints;
 
+			for(var i = 0;i<radius;i++) {
+				var numPoints = 2 * Math.PI * radius;
+				var angle = Math.PI * 2/numPoints;
+				for (var j = 0; j < numPoints; j++) {
+					
+					var newX = i*Math.sin(angle*j) + x;
+					var newY = i*Math.cos(angle*j) + y;
+				
+					var x0 = newX + 20*Math.cos(theta);
+					var y0 = newY + 20*Math.sin(theta);
+					
+					var h = utilities.noise(x0 * .005, y0 * .005);
+			
+					color.fill(g, h, 0);
+				
+					g.rect(newX, newY, 1, 1);
+				}
+			}
+			
+			/*
+			for(var i= 0;i<numPoints;i++) {
+				// g.point(radius*Math.sin(angle*i),radius*Math.cos(angle*i));
+				g.rect(radius*Math.sin(angle*i) + x,radius*Math.cos(angle*i) + y, 1, 1);
+			}*/
+			
+			
+			/*
 			for (var i = 0; i < numPoints; i++) {
 				for (var j = 0; j < numPoints; j++) {
 					g.rect(radius * Math.sin(angle * i) + x, radius * Math.cos(angle * j) + y, 1, 1);
 					// console.log(radius * Math.sin(i) + x);
 				}
-			}
+			}*/
+
 			
-			/*
-			for(var i= ;i<numPoints;i++) {
-				// g.point(radius*Math.sin(angle*i),radius*Math.cos(angle*i));
-				g.rect(radius*Math.sin(angle*i) + x,radius*Math.cos(angle*i) + y, 1, 1);
-			} */
 			
 			// g.point(x, y);
 			
