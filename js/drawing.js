@@ -79,10 +79,40 @@ define(["./particles/particle", "common"], function(Particle, common) {'use stri
 		drawWithMouse : function(g) {
 			var w = g.width;
             var h = g.height;
+			var x = g.mouse.x;
+			var y = g.mouse.y;
+			
+			var theta = 10 * utilities.noise(x * .005 * .3, y * .005 * .3 + 100);
+			
+			var x0 = x + 20*Math.cos(theta);
+			var y0 = y + 20*Math.sin(theta);
+					
+			var h = utilities.noise(x0 * .005, y0 * .005);
+			
+			var color = new common.KColor(.7, 1, 1);
+			
+			color.fill(g, h, 0);
+			
+			var radius = 5;
+			var numPoints = radius * 20;
+			var angle = Math.PI * 2/numPoints;
 
-            var spacing = 5;
-            var rows = Math.round(h / spacing) + 1;
-            var columns = Math.round(w / spacing) + 1;
+			for (var i = 0; i < numPoints/2; i++) {
+				for (var j = 0; j < numPoints/2; j++) {
+					g.rect(radius * Math.sin(angle * i) + x, radius * Math.cos(angle * j) + y, 1, 1);
+					// console.log(radius * Math.sin(i) + x);
+				}
+			}
+			
+			/*
+			for(var i= ;i<numPoints;i++) {
+				// g.point(radius*Math.sin(angle*i),radius*Math.cos(angle*i));
+				g.rect(radius*Math.sin(angle*i) + x,radius*Math.cos(angle*i) + y, 1, 1);
+			} */
+			
+			// g.point(x, y);
+			
+			//g.rect(x, y, 1, 1);
 		},
 
         // 3d things

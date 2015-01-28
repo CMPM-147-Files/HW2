@@ -66,9 +66,13 @@ define(["processing", "./drawing", "./threeUtils/threeScene", "common", "./parti
 
                 // Tell processing to define ellipses as a center and a radius
                 g.ellipseMode(g.CENTER_RADIUS);
+				
+				g.mouse = app.mouse;
 
                 // Draw ONE-TIME things
-                drawing.drawGrid(g);
+				g.noStroke();
+				g.background(0.5, 0, 1);
+                // drawing.drawGrid(g);
 
                 g.draw = function() {
 
@@ -87,7 +91,12 @@ define(["processing", "./drawing", "./threeUtils/threeScene", "common", "./parti
                         app.particles[i].draw(g);
                     }
                     g.popMatrix();
-
+					
+					
+					if (app.moused) {
+						drawing.drawWithMouse(g);
+					}
+					
                 };
             });
             this.initUI();
@@ -110,22 +119,18 @@ define(["processing", "./drawing", "./threeUtils/threeScene", "common", "./parti
         initUI : function() {
 
             $("#view").mousemove(function(ev) {
-                var x = ev.offsetX - app.dimensions.x / 2;
-                var y = ev.offsetY - app.dimensions.y / 2;
-                //    console.log(x + " " + y);
+                var x = ev.offsetX;// - app.dimensions.x / 2;
+                var y = ev.offsetY;// - app.dimensions.y / 2;
+                // console.log(x + " " + y);
                 app.mouse.setTo(x, y);
             });
 
             // using the event helper
             $('#view').mousewheel(function(event) {
-
             });
 
-			$("#view").click(function(ev) {
-				var x = ev.offsetX - app.dimensions.x / 2;
-                var y = ev.offsetY - app.dimensions.y / 2;
-				
-				console.log(x + " " + y);
+			$("#view").mousedown(function(ev) {
+				app.moused = true;
 			});
 			
             $("#view").draggable({
@@ -138,6 +143,10 @@ define(["processing", "./drawing", "./threeUtils/threeScene", "common", "./parti
                     var y = $('#dragPos').offset().top;
                 }
             });
+			
+			$("#view").mouseup(function(ev) {
+				app.moused = false;
+			});
 
             $(document).keydown(function(e) {
 
@@ -162,6 +171,8 @@ define(["processing", "./drawing", "./threeUtils/threeScene", "common", "./parti
                         app.toggle3D();
                         // Do something
                         break;
+					case 'S':
+						app.key = 's';
                 }
 
             });
