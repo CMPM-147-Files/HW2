@@ -84,7 +84,9 @@ define(["./particles/particle", "common"], function(Particle, common) {'use stri
 			
 			var theta = 10 * utilities.noise(x * .005 * .3, y * .005 * .3 + 100);
 			
-			var color = new common.KColor(.7, 1, 1);
+			
+			// var color = new common.KColor(g.newBright, 1, g.newHue);
+			var color = new common.KColor(g.newHue, 1, g.newBright);
 			
 			// Loops are used for circle drawing to that the pixels within the circle will have different colors
 			

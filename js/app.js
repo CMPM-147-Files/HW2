@@ -27,6 +27,7 @@ define(["processing", "./drawing", "./threeUtils/threeScene", "common", "./parti
 
         mouse : new Vector(),
         dimensions : new Vector(),
+		change : new Vector(),
 
         init : function() {
             app.is3D = true;
@@ -40,7 +41,7 @@ define(["processing", "./drawing", "./threeUtils/threeScene", "common", "./parti
             var canvas = $("#processingCanvas");
 
             // Create the canvas
-
+			
 			
             var processingInstance = new Processing(canvas.get(0), function(g) {
                 app.particles = [];
@@ -59,6 +60,9 @@ define(["processing", "./drawing", "./threeUtils/threeScene", "common", "./parti
                 g.size(w, h);
 
                 var texture = new THREE.Texture(canvas.get());
+				
+				var newHue = 0.5;
+				var newBright = 0.5;
 
                 // Tell processing that we'll be defining colors with
                 //  the HSB color mode, with values [0, 1]
@@ -81,21 +85,32 @@ define(["processing", "./drawing", "./threeUtils/threeScene", "common", "./parti
                     // Update time
                     app.time.updateTime();
 
-                    for (var i = 0; i < app.particles.length; i++) {
-                        app.particles[i].update(app.time);
-                    }
+                    // for (var i = 0; i < app.particles.length; i++) {
+                    //    app.particles[i].update(app.time);
+                    // }
 
                     // Move to the center of the canvas
                     g.pushMatrix();
                     g.translate(w / 2, h / 2);
 
-                    for (var i = 0; i < app.particles.length; i++) {
-                        app.particles[i].draw(g);
-                    }
+                    // for (var i = 0; i < app.particles.length; i++) {
+                    //    app.particles[i].draw(g);
+                    // }
                     g.popMatrix();
 					
 					
+					
 					if (app.moused) {
+						
+						newBright = newBright - app.change.y / 50;
+						if (newBright < 0.25) newBright = 1;
+						else if (newBright > 1) newBright = 0.25;
+						
+						g.newHue = newHue;
+						g.newBright = newBright;
+						
+						app.change.setTo(0,0);
+						
 						drawing.drawWithMouse(g);
 					}
 					
@@ -104,6 +119,12 @@ define(["processing", "./drawing", "./threeUtils/threeScene", "common", "./parti
 						if (g.drawRad < 1) g.drawRad = 1;
 					} else if (app.key === 'e') {
 						g.drawRad++;
+					} else if (app.key === 'a') {
+						newHue = newHue - 0.1;
+						if (newHue < 0) newHue = 0;
+					} else if (app.key === 'd') {
+						newHue = newHue + 0.1;
+						if (newHue > 1) newHue = 1;
 					}
 					
 					app.key = undefined;
@@ -133,6 +154,7 @@ define(["processing", "./drawing", "./threeUtils/threeScene", "common", "./parti
                 var x = ev.offsetX;// - app.dimensions.x / 2;
                 var y = ev.offsetY;// - app.dimensions.y / 2;
                 // console.log(x + " " + y);
+				app.change.setTo(app.mouse.x - x, app.mouse.y - y);
                 app.mouse.setTo(x, y);
             });
 
@@ -190,6 +212,12 @@ define(["processing", "./drawing", "./threeUtils/threeScene", "common", "./parti
 						break;
 					case 'E':
 						app.key = 'e';
+						break;
+					case 'A':
+						app.key = 'a';
+						break;
+					case 'D':
+						app.key = 'd';
 						break;
                 }
 
